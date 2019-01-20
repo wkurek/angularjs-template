@@ -23,6 +23,7 @@ function buildDev() {
     .pipe(plugins.inject(appScripts, { relative: true }))
     .pipe(plugins.inject(vendorScripts, { relative: true, name: "bower" }))
     .pipe(plugins.inject(styles, { relative: true }))
+    .pipe(plugins.cacheBust())
     .pipe(dest(paths.tmp));
 }
 
@@ -37,6 +38,7 @@ function buildProd() {
     .pipe(plugins.inject(vendorScripts, { relative: true, name: "bower" }))
     .pipe(plugins.inject(styles, { relative: true }))
     .pipe(plugins.htmlmin({ collapseWhitespace: true, removeComments: true }))
+    .pipe(plugins.cacheBust())
     .pipe(dest(paths.dist));
 }
 

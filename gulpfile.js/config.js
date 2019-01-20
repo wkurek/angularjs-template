@@ -5,7 +5,8 @@ const paths = {
   partials: ["./app/**/*.html", "!./app/index.html"],
   bowerJson: "./bower.json",
   tmp: "./tmp",
-  dist: "./dist"
+  dist: "./dist",
+  app: "./app"
 };
 
 exports.paths = paths;

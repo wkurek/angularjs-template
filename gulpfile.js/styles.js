@@ -12,6 +12,7 @@ function renameMinifiedFile() {
 function buildStylesDev() {
   return src(paths.styles)
     .pipe(plugins.less())
+    .pipe(plugins.cacheBust())
     .pipe(dest(paths.tmp));
 }
 
@@ -22,6 +23,7 @@ function buildStylesProd() {
     .pipe(plugins.cleanCss())
     .pipe(plugins.sourcemaps.write())
     .pipe(renameMinifiedFile())
+    .pipe(plugins.cacheBust())
     .pipe(dest(paths.dist));
 }
 

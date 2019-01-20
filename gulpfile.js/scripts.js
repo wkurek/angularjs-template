@@ -14,6 +14,7 @@ function validateScripts() {
 function buildScripsDev() {
   return validateScripts()
     .pipe(plugins.angularFilesort())
+    .pipe(plugins.cacheBust())
     .pipe(dest(paths.tmp));
 }
 
@@ -27,6 +28,7 @@ function buildScripsProd() {
     .pipe(plugins.concat("app.min.js"))
     .pipe(plugins.uglify())
     .pipe(plugins.sourcemaps.write())
+    .pipe(plugins.cacheBust())
     .pipe(dest(paths.dist));
 }
 
