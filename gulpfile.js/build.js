@@ -23,7 +23,6 @@ function buildDev() {
     .pipe(plugins.inject(appScripts, { relative: true }))
     .pipe(plugins.inject(vendorScripts, { relative: true, name: "bower" }))
     .pipe(plugins.inject(styles, { relative: true }))
-    .pipe(plugins.cacheBust())
     .pipe(dest(paths.tmp));
 }
 
@@ -37,9 +36,16 @@ function buildProd() {
     .pipe(plugins.inject(appScripts, { relative: true }))
     .pipe(plugins.inject(vendorScripts, { relative: true, name: "bower" }))
     .pipe(plugins.inject(styles, { relative: true }))
-    .pipe(plugins.htmlmin({ collapseWhitespace: true, removeComments: true }))
-    .pipe(plugins.cacheBust())
-    .pipe(dest(paths.dist));
+    .pipe(
+      plugins.htmlmin({
+        removeEmptyAttributes: true,
+        removeAttributeQuotes: true,
+        collapseBooleanAttributes: true,
+        collapseWhitespace: true
+      })
+    )
+    .pipe(dest(paths.dist))
+    .pipe(plugins.size({ showFiles: true }));
 }
 
 exports.buildDev = parallel(buildPartialsDev, buildDev);

@@ -1,7 +1,7 @@
 const { src, dest } = require("gulp");
 const plugins = require("gulp-load-plugins")();
 
-const { paths } = require("./config");
+const { paths, errorHandler } = require("./config");
 
 function renameMinifiedFile() {
   return plugins.rename(function(path) {
@@ -12,18 +12,18 @@ function renameMinifiedFile() {
 function buildStylesDev() {
   return src(paths.styles)
     .pipe(plugins.less())
-    .pipe(plugins.cacheBust())
     .pipe(dest(paths.tmp));
 }
 
 function buildStylesProd() {
   return src(paths.styles)
     .pipe(plugins.sourcemaps.init())
-    .pipe(plugins.less())
+    .pipe(plugins.less().on("error", errorHandler("Less")))
+    .pipe(plugins.autoprefixer().on("error", errorHandler("AutoPrefixer")))
     .pipe(plugins.cleanCss())
     .pipe(plugins.sourcemaps.write())
     .pipe(renameMinifiedFile())
-    .pipe(plugins.cacheBust())
+    .pipe(plugins.rev())
     .pipe(dest(paths.dist));
 }
 

@@ -1,3 +1,5 @@
+const log = require("fancy-log");
+
 const paths = {
   scripts: "./app/**/*.js",
   styles: ["./app/**/*.css", "./app/**/*.less"],
@@ -9,4 +11,12 @@ const paths = {
   app: "./app"
 };
 
+function errorHandler(title) {
+  return function(err) {
+    log.error(`[${title}]: ${err.toString()}`);
+    this.emit("end");
+  };
+}
+
 exports.paths = paths;
+exports.errorHandler = errorHandler;

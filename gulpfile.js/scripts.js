@@ -2,19 +2,22 @@ const { src, dest } = require("gulp");
 const plugins = require("gulp-load-plugins")();
 const merge = require("merge-stream");
 
-const { paths } = require("./config");
+const { paths, errorHandler } = require("./config");
 const { buildPartialsToScript } = require("./partials");
 
 function validateScripts() {
   return src(paths.scripts)
-    .pipe(plugins.jshint())
+    .pipe(
+      plugins.jshint({
+        esversion: 6
+      })
+    )
     .pipe(plugins.jshint.reporter("jshint-stylish"));
 }
 
 function buildScripsDev() {
   return validateScripts()
     .pipe(plugins.angularFilesort())
-    .pipe(plugins.cacheBust())
     .pipe(dest(paths.tmp));
 }
 
@@ -26,9 +29,9 @@ function buildScripsProd() {
     .pipe(plugins.angularFilesort())
     .pipe(plugins.sourcemaps.init())
     .pipe(plugins.concat("app.min.js"))
-    .pipe(plugins.uglify())
+    .pipe(plugins.terser().on("error", errorHandler("Terser")))
     .pipe(plugins.sourcemaps.write())
-    .pipe(plugins.cacheBust())
+    .pipe(plugins.rev())
     .pipe(dest(paths.dist));
 }
 

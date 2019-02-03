@@ -18,7 +18,14 @@ function buildPartialsDev() {
 function buildPartialsToScript() {
   return validatePartials()
     .pipe(plugins.htmlhint.failOnError())
-    .pipe(plugins.htmlmin({ collapseWhitespace: true, removeComments: true }))
+    .pipe(
+      plugins.htmlmin({
+        removeEmptyAttributes: true,
+        removeAttributeQuotes: true,
+        collapseBooleanAttributes: true,
+        collapseWhitespace: true
+      })
+    )
     .pipe(
       plugins.ngHtml2js({
         moduleName: "planetsApp"
