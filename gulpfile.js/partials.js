@@ -10,9 +10,7 @@ function validatePartials() {
 }
 
 function buildPartialsDev() {
-  return validatePartials()
-    .pipe(plugins.cacheBust())
-    .pipe(dest(paths.tmp));
+  return validatePartials().pipe(dest(paths.tmp));
 }
 
 function buildPartialsToScript() {

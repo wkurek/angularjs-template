@@ -1,1 +1,1 @@
-angular.module("planetsList", []);
+angular.module("planetsList", ["planetRow"]);
